@@ -1,3 +1,31 @@
+const express = require('express');
+const app = express();
+const fs = require('fs');
+const template = require('./lib/template.js');
+const path = require('path');
+const sanitizeHtml = require('sanitize-html');
+
+app.get('/', function (request, response) {
+    fs.readdir('./data', function (error, filelist) {
+        let title = 'Welcome';
+        let description = 'Hello, Node.js';
+        let list = template.list(filelist);
+        let html = template.html(title, list,
+            `<h2>${title}</h2>${description}`,
+            `<a href="/create">create</a>`
+        );
+        response.send(html);
+    })
+});
+
+app.get('/page/:pageId', function (request, response) {
+    response.send(request, response);
+});
+
+app.listen(3001, function () {
+    console.log('Example app listening on port 3001!')
+});
+/*
 let http = require('http');
 let fs = require('fs');
 let url = require('url');
@@ -139,4 +167,4 @@ let app = http.createServer(function (request, response) {
         response.end('Not found');
     }
 });
-app.listen(3000);
+app.listen(3000);*/
